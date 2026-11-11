@@ -1,0 +1,26 @@
+{
+  "name": "shopnow-loadbalancer",
+  "version": "1.0.0",
+  "description": "Balanceador de carga com tolerancia a falhas para a ShopNow",
+  "main": "src/balanceador/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "iniciar:servidores": "node src/instancias/cluster.js",
+    "iniciar:balanceador:lrt": "cross-env ALGORITMO=least-response-time node src/balanceador/index.js",
+    "iniciar:balanceador:iph": "cross-env ALGORITMO=ip-hash node src/balanceador/index.js",
+    "sistema:completo:lrt": "concurrently -n \"SERVIDORES,BALANCEADOR\" -c \"yellow,cyan\" \"npm run iniciar:servidores\" \"npm run iniciar:balanceador:lrt\"",
+    "sistema:completo:iph": "concurrently -n \"SERVIDORES,BALANCEADOR\" -c \"yellow,magenta\" \"npm run iniciar:servidores\" \"npm run iniciar:balanceador:iph\"",
+    "testar:carga:leve": ".\\ab.exe -n 500 -c 10 http://localhost:8000/",
+    "testar:carga:pesada": ".\\ab.exe -n 3000 -c 50 http://localhost:8000/",
+    "derrubar:servidor-1": "curl.exe -X POST http://localhost:3001/panico",
+    "derrubar:servidor-2": "curl.exe -X POST http://localhost:3002/panico",
+    "derrubar:servidor-3": "curl.exe -X POST http://localhost:3003/panico"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "cross-env": "^10.1.0"
+  }
+}

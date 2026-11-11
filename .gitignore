@@ -1,0 +1,13 @@
+# Dependências do Node.js
+node_modules/
+npm-debug.log*
+
+# Binários locais do Apache Benchmark e bibliotecas Windows
+*.exe
+*.dll
+
+# Arquivos de sistema e editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
